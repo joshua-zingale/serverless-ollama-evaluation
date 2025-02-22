@@ -7,6 +7,10 @@ client = Client(
 )
 
 def request(prompt: str , stream = False):
+    '''
+    Send a prompt to Ollama to get a response from the language model.
+    Allows for streaming.
+    '''
     return client.generate(model=MODEL_NAME, prompt = prompt, stream = stream)
 
 def main():
