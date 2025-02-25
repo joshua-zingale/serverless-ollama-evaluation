@@ -1,9 +1,8 @@
 from argparse import ArgumentParser
 from helpers import *
-import numpy as np
 import asyncio
-from time import time
 import pprint
+
 parser = ArgumentParser()
 
 parser.add_argument("--seed", type=int, default=None)
