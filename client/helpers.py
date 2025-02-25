@@ -35,8 +35,12 @@ class Countdown():
     def __init__(self, length: float):
         self.start_time = time.time()
 
+        self.length = length
         self.end_time = self.start_time + length
 
+    def get_length(self):
+        return self.length
+    
     def bind(self, iter):
         '''Bind an iterator to continue only while the Countdown is ongoing.'''
 
@@ -55,4 +59,4 @@ class Countdown():
         return max(self.end_time - time.time(), 0)
     
     def time_elasped(self):
-        return min(time.time() - self.start_time, self.end_time - self.start_time)
+        return time.time() - self.start_time
