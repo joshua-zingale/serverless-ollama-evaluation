@@ -21,7 +21,7 @@ async def ask(question: str, countdown: Countdown) -> dict:
      - num_chars: number of characters generated from the language model before finishing
      - ttft: time in seconds since the request that the first token was received
      - finished: boolan, True if the response finished generating before the countdown finished; otherwise False
-     - finsish_time: time in seconds since the countdown's start that the last token was received form the LLM
+     - finish_time: time in seconds since the countdown's start that the last token was received form the LLM
     '''
     start_time = countdown.time_elasped()
     stats = {'request_time': start_time, 'finished': True, 'num_chars': 0}
