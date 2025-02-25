@@ -55,4 +55,4 @@ class Countdown():
         return max(self.end_time - time.time(), 0)
     
     def time_elasped(self):
-        return time.time() - self.start_time
+        return min(time.time() - self.start_time, self.end_time - self.start_time)
