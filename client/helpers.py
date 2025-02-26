@@ -1,6 +1,5 @@
 from config import OLLAMA_URL, MODEL_NAME
 from ollama import AsyncClient
-import numpy as np
 import random
 import time
 
