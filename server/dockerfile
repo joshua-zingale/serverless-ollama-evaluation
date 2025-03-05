@@ -1,0 +1,7 @@
+FROM ollama/ollama
+
+EXPOSE 11434
+
+COPY ./models/ /root/.ollama/models/
+
+CMD ["serve"]
