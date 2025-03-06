@@ -1,7 +1,6 @@
 from argparse import ArgumentParser
 from helpers import *
 import asyncio
-import pprint
 import json
 
 parser = ArgumentParser()
