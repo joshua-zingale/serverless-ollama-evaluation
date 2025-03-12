@@ -8,12 +8,6 @@ client = AsyncClient(
   host=OLLAMA_URL,
 )
 
-def answer(prompt: str):
-    '''
-    Send a prompt to Ollama to get an asynchronous streaming response from the language model.
-    '''
-    return client.generate(model=MODEL_NAME, prompt = prompt, stream = True)
-
 class QuestionSet():
     '''An iterable set of natural langauge questions that yields questions'''
     def __init__(self, n: int = 1000, seed = None):
@@ -46,23 +40,29 @@ class AsyncPacer():
     The pacing function determines how much time is artificially placed
     between each iteration with a non-blocking sleep.
     """
-    def __init__(self, generator, clock, pacing_function):
+    def __init__(self, generator, clock, pacing_function, initial_wait = 0):
         self.generator = generator
         self.pacing_function = pacing_function
         self.clock = clock
+        self.initial_wait = initial_wait
 
     async def __aiter__(self):
-       
-       before_gen = self.clock.time()
-       for e in self.generator:
+
+        extra_wait = self.clock.time()
+        if self.initial_wait > 0:
+            await asyncio.sleep(self.initial_wait)
+            
+        for e in self.generator:
             yield e
             wait_time = self.pacing_function(self.clock.time())
             if not wait_time:
                 break
+            wait_time -= extra_wait
             
-            generation_time = self.clock.time() - before_gen
-            await asyncio.sleep(max(wait_time - generation_time, 0))
-            before_gen = self.clock.time()
+            before_wait = self.clock.time()
+            await asyncio.sleep(max(wait_time, 0))
+            actual_wait = self.clock.time() - before_wait
+            extra_wait = actual_wait - max(wait_time, 0)
             
         
 
@@ -78,6 +78,34 @@ class Clock():
             self.running = False
         def running(self):
             return self.running
+
+
+async def ask(question: str, start_time, clock: Clock) -> dict:
+    '''
+    Streams responses from a language model for a question
+
+    Returns statistics within a dictionary about the generation:
+     - request_time: time in seconds since the countdown's start that the first request was sent to the LLM
+     - num_chars: number of characters generated from the language model before finishing, i.e. before either the generation or countdown ended
+     - ttft: time in seconds since the request that the first token was received
+     - finish_time: time in seconds since the countdown's start that the last token was received form the LLM
+    '''
+    stats = {'request_time': start_time, 'num_chars': 0, 'finished': False, 'ttft': None}
+    first = True
+
+    try:
+        async for chunk in await client.generate(model=MODEL_NAME, prompt = question, stream = True):
+            if first and len(chunk['response']) > 0:
+                first = False
+                stats['ttft'] = clock.time() - start_time
+
+            stats['num_chars'] += len(chunk['response'])
+
+        stats['finish_time'] = clock.time()
+        stats['finished'] = True
+    except asyncio.CancelledError:
+       return stats
+    return stats
 
 
 class Countdown():
