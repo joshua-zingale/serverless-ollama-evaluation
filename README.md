@@ -15,3 +15,14 @@ sudo apt update
 sudo apt -y install docker.io
 docker run --network host  --name my-custom-nginx-container -v /users/jzing002/nginx.conf:/etc/nginx/nginx.conf:ro --rm nginx
 ```
+
+
+Get prometheus pod count data
+```
+curl -G --data-urlencode 'query=count(kube_pod_container_status_running{pod=~"ollama.*"}) or vector(0)' --data-urlencode 'start=1741824153' --data-urlencode 'end=1741824903' --data-urlencode 'step=10s' http://128.110.216.196:9090/api/v1/query_range
+```
+
+Ollama service
+```
+kn service create ollama   --image docker.io/jzing002/cs208-server   --scale-min 0   --scale-max 3   --label app=ollama  --port 11434 --concurrency-limit 4
+```
