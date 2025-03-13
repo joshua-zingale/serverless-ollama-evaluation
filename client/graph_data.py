@@ -9,6 +9,7 @@ def main():
     parser = ArgumentParser()
 
     parser.add_argument('filename',help='data file to be loaded and visualized')
+    parser.add_argument('-g', action="store_true")
 
     args = parser.parse_args()
 
@@ -33,8 +34,9 @@ def main():
 
     rt_deltas = [(rt1 - rt0) for rt0,rt1 in zip(request_times[:-1],request_times[1:])]
 
-    plt.plot(request_times[:-1], rt_deltas)
-    plt.show()
+    if args.g:
+        plt.plot(request_times[:-1], rt_deltas)
+        plt.show()
 
 
 if __name__ == "__main__":

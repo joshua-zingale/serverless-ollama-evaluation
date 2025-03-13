@@ -6,6 +6,7 @@ import asyncio
 
 client = AsyncClient(
   host=OLLAMA_URL,
+  headers={"Host": "ollama.default.example.com"}
 )
 
 class QuestionSet():

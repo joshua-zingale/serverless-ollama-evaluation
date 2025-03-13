@@ -11,7 +11,7 @@ async def main():
     parser = ArgumentParser()
 
     parser.add_argument("--load", type=str, default="constant")
-    parser.add_argument("--load_params",nargs="*", type=str, default=[])
+    parser.add_argument("--load_params",nargs="*", type=str, default=[0.2])
     parser.add_argument("--initial_wait",type=float,default=0,help='time in seconds to be waited before the first request is sent')
 
 

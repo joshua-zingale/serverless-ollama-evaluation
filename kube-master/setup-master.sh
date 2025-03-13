@@ -81,5 +81,41 @@ kubectl patch service kourier \
 
 kubectl --namespace kourier-system get service kourier
 
+
+# Install Helm
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+# Install Prometheus
+echo "kube-state-metrics:
+  metricLabelsAllowlist:
+    - pods=[*]
+    - deployments=[app.kubernetes.io/name,app.kubernetes.io/component,app.kubernetes.io/instance]
+prometheus:
+  prometheusSpec:
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false" > values.yaml
+
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm install prometheus prometheus-community/kube-prometheus-stack -n default -f values.yaml
+
+
+# Install KNative Eventing
+kubectl apply -f https://github.com/knative/eventing/releases/download/knative-v1.17.3/eventing-crds.yaml
+kubectl apply -f https://github.com/knative/eventing/releases/download/knative-v1.17.3/eventing-core.yaml
+
+# Install KNative Metrics
+kubectl apply -f https://raw.githubusercontent.com/knative-extensions/monitoring/main/servicemonitor.yaml
+
+
+# Printout information
+printf "\nThe ingress is accessible on the internet at %s:%s\n" $(curl -s ifconfig.me) $(kubectl get svc kourier -n kourier-system -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')
+echo $(kubeadm token create --print-join-command)
+echo "If something does not work, try running all the commands as the super user, which can be done by executing 'sudo su' before running all the commands"
+
+
+# Make Prometheus accessible outside cluster
+kubectl port-forward -n default svc/prometheus-kube-prometheus-prometheus 9090:9090
+
 # kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.17.0/serving-default-domain.yaml
 # kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.17.0/serving-hpa.yaml
