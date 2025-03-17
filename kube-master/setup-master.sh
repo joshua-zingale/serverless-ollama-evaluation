@@ -86,7 +86,7 @@ kubectl --namespace kourier-system get service kourier
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
 # Install Prometheus
-echo "kube-state-metrics:
+sudo echo "kube-state-metrics:
   metricLabelsAllowlist:
     - pods=[*]
     - deployments=[app.kubernetes.io/name,app.kubernetes.io/component,app.kubernetes.io/instance]
@@ -98,7 +98,6 @@ prometheus:
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
 helm install prometheus prometheus-community/kube-prometheus-stack -n default -f values.yaml
-
 
 # Install KNative Eventing
 kubectl apply -f https://github.com/knative/eventing/releases/download/knative-v1.17.3/eventing-crds.yaml
