@@ -114,7 +114,7 @@ echo "If something does not work, try running all the commands as the super user
 
 
 # Make Prometheus accessible outside cluster
-kubectl port-forward -n default svc/prometheus-kube-prometheus-prometheus 9090:9090
+kubectl port-forward -n default svc/prometheus-kube-prometheus-prometheus 9090:9090 --address=0.0.0.0
 
 # kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.17.0/serving-default-domain.yaml
 # kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.17.0/serving-hpa.yaml

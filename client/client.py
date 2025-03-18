@@ -13,7 +13,7 @@ async def main():
     parser.add_argument("--load", type=str, default="constant")
     parser.add_argument("--load_params",nargs="*", type=str, default=[0.2])
     parser.add_argument("--initial_wait",type=float,default=0,help='time in seconds to be waited before the first request is sent')
-
+    parser.add_argument("--output_filename", default=None)
 
     args = parser.parse_args()
 
@@ -37,7 +37,7 @@ async def main():
                     key=lambda x: x['request_time'])
     
     filename = str(time.time()).replace(".","-")
-    with open(f"data/results/{filename}.json", "w") as f:
+    with open(f"data/results/{args.output_filename or filename}.json", "w") as f:
         json.dump({'start_time': start_time, 'data': results}, f)
 
 if __name__ == "__main__":

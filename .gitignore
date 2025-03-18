@@ -1,4 +1,7 @@
 .venv/
 **/__pycache__
 **/results
+**/prometheus
 server/models
+.ignored/
+**/.DS_Store

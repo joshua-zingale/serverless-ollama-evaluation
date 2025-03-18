@@ -29,12 +29,13 @@ def main():
     ttfts = np.array(list(map(lambda x: x['ttft'], finished)))
 
     print(f"Average ttft: {ttfts.mean()}")
+    print("Requests per Second:", len(finished)/max(map(lambda x: x['request_time'], data)))
 
     print()
 
     request_times = list(map(lambda x: x['request_time'], data))
 
-    rt_deltas = [(rt1 - rt0) for rt0,rt1 in zip(request_times[:-1],request_times[1:])]
+    rt_deltas = [1/(rt1 - rt0) for rt0,rt1 in zip(request_times[:-1],request_times[1:])]
 
     if args.g:
         plt.plot(request_times[:-1], rt_deltas)

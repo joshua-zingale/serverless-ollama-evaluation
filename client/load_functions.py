@@ -36,25 +36,40 @@ def sinusoidal(min_freq: float, max_freq: float, period: float, max_time: float 
             return None
         
         factor =  2*PI / period
-        t0 = time * factor - PI/2 /period
+        t0 = time * factor
 
-        # Since x + sin(x) = k has no analytic solution, we use Newton's method to approximate
-        # the zero of x + sin(x) - k = 0
-        f = lambda t: t*(max_freq + min_freq)/2 + (min_freq - max_freq)*sin(t) / 2
-        fp = lambda t: (max_freq + min_freq)/2 + (min_freq - max_freq)*cos(t) / 2
+        freq = (max_freq + min_freq)/2 + (min_freq - max_freq)*cos(t0) / 2
 
-        g = lambda t: f(t) - f(t0) - 1
-        gp = fp
-
-        t = random.random() * (factor/min_freq-factor/max_freq) + 1/max_freq + t0
-        for _ in range(10):
-            t = t - g(t)/max(gp(t), 1e-4)
-
-        # print(f"D {fp(t0)}")
-        #print(t)
-        return (t - t0)
+        return 1/freq
     
     return load
+
+# @coerce_arguments
+# def sinusoidal(min_freq: float, max_freq: float, period: float, max_time: float = 10):
+#     def load(time):
+#         if time > max_time:
+#             return None
+        
+#         factor =  2*PI / period
+#         t0 = time * factor
+
+#         # Since x + sin(x) = k has no analytic solution, we use Newton's method to approximate
+#         # the zero of x + sin(x) - k = 0
+#         f = lambda t: t*(max_freq + min_freq)/2 + (min_freq - max_freq)*sin(t) / 2
+#         fp = lambda t: (max_freq + min_freq)/2 + (min_freq - max_freq)*cos(t) / 2
+
+#         g = lambda t: f(t) - f(t0) - 1
+#         gp = fp
+
+#         t = random.random() * (factor/min_freq-factor/max_freq) + 1/max_freq + t0
+#         for _ in range(10):
+#             t = t - g(t)/max(gp(t), 1e-4)
+
+#         # print(f"D {fp(t0)}")
+#         #print(t)
+#         return max(min(t - t0, 1/min_freq), 1/max_freq)
+    
+#     return load
 
 @coerce_arguments
 def spikes(requests_per_second: float, time_between_spikes: float, spike_length: float, spike_rps: float, max_time: float = 10):
