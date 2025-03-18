@@ -23,6 +23,8 @@ def main():
 
     finished = list(filter(lambda x: x['finished'] == True, data))
     print(f"Requests sent: {len(data)}, Requests finished: {len(finished)}")
+    num_chars = sum(map(lambda x: x["num_chars"], data))
+    print(f"Total characters received: {num_chars}")
 
     ttfts = np.array(list(map(lambda x: x['ttft'], finished)))
 
