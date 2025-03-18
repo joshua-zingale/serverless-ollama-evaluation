@@ -24,5 +24,5 @@ curl -G --data-urlencode 'query=count(kube_pod_container_status_running{pod=~"ol
 
 Ollama service
 ```
-kn service create ollama   --image docker.io/jzing002/cs208-server   --scale-min 0   --scale-max 3   --label app=ollama  --port 11434 --concurrency-limit 4
+kn service create ollama   --image docker.io/jzing002/cs208-server   --label app=ollama  --port 11434 --concurrency-limit 4 --request cpu=8000m,memory=64Gi
 ```
