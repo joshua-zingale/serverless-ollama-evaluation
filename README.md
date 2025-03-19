@@ -26,3 +26,7 @@ Ollama service
 ```
 kn service create ollama   --image docker.io/jzing002/cs208-server   --label app=ollama  --port 11434 --concurrency-limit 4 --request cpu=8000m,memory=48Gi
 ```
+
+
+8 pods idle: CPU seconds per second: 0.011, bytes of ram: 300023808
+12 pods idle: CPU seconds per second: 0.015, bytes of ram: 445743104
