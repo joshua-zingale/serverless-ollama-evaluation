@@ -1,7 +1,7 @@
 # serverless-ollama-evaluation
 A project for my cloud computing course: compares efficiency and effectiveness of serverfull vs. serverless LM APIs. A group project between Joshua Zingale and Benjamin Bravo.
 
-To set up our KNative environment, run kube-slave/setup-slave.sh on each slave node and run kube-master/setup-master.sh on the master node. All slave nodes must then be joined to the master with the join command printed out by the master node.
+To set up our KNative environment, run `kube-slave/setup-slave.sh` on each slave node and run `kube-master/setup-master.sh` on the master node. All slave nodes must then be joined to the master with the join command printed out by the master node.
 
 Once the master and all of its slave nodes are initialized, the Ollama service may be started with
 ```bash
