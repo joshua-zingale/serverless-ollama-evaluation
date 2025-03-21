@@ -53,9 +53,9 @@ def main():
 
 
         ax01 = axes[0].twinx()
-        ax01.set_ylabel('# Active Pods', color = 'green')
-        ax01.plot(p_data['time'], p_data['num_pods'], label='# Active Pods', color = 'green')
-        ax01.tick_params(axis='y', labelcolor='green')
+        ax01.set_ylabel('# Active Pods', color = 'orange')
+        ax01.plot(p_data['time'], p_data['num_pods'], label='# Active Pods', color = 'orange')
+        ax01.tick_params(axis='y', labelcolor='orange')
         
 
         axes[1].set_ylabel('Memory (GB)', color='red')
@@ -64,30 +64,31 @@ def main():
 
 
         ax11 = axes[1].twinx()
-        ax11.set_ylabel('CPU Seconds', color='purple')
-        ax11.plot(p_data['time'], p_data['cpu_seconds'], label='CPU Seconds', color='purple')
-        ax11.tick_params(axis='y', labelcolor='purple')
+        ax11.set_ylabel('CPU Seconds', color='black')
+        ax11.plot(p_data['time'], p_data['cpu_seconds'], label='CPU Seconds', color='black')
+        ax11.tick_params(axis='y', labelcolor='black')
 
 
 
-        axes[2].set_ylabel('Characters/Second/Request', color='orange')
-        axes[2].plot(c_data['time'], c_data['cpspr'], color='orange')
-        axes[2].scatter(*get_cpspr_dots(c_data), color='orange')
-        axes[2].tick_params(axis='y', labelcolor='orange')
+        axes[2].set_ylabel('Characters/Second/Request', color='fuchsia')
+        axes[2].plot(c_data['time'], c_data['cpspr'], color='fuchsia')
+        axes[2].scatter(*get_cpspr_dots(c_data), color='fuchsia')
+        axes[2].tick_params(axis='y', labelcolor='fuchsia')
 
 
         non_none_cpspr = list(filter(lambda x: x, c_data['cpspr']))
         non_none_ttft = list(filter(lambda x: x, c_data['ttft']))
         ax21 = axes[2].twinx()
         ax21.set_ylabel('Time Till First Token', color='brown')
-        ax21.plot(np.array(c_data['time']), c_data['ttft'], label=f'TTFT: m={np.mean(non_none_ttft):0.2}, s={np.std(non_none_ttft):0.2}\nCPSPR: m={int(np.mean(non_none_cpspr))}, s={int(np.std(non_none_cpspr))}', color='brown')
+        ax21.plot(np.array(c_data['time']), c_data['ttft'], label=f'', color='brown')
         ax21.scatter(*get_ttft_dots(c_data), color='brown')
         ax21.tick_params(axis='y', labelcolor='brown')
 
-        ax21.legend()
+        axes[2].set_xlabel(f'Time (s)\nTTFT: m={np.mean(non_none_ttft):0.2}, s={np.std(non_none_ttft):0.2}\nCPSPR: m={int(np.mean(non_none_cpspr))}, s={int(np.std(non_none_cpspr))}')
+
+        #ax21.legend()
 
         fig.tight_layout()
-        fig.figure(figsize=(8,5))
         plt.savefig(f'images/{title.lower().replace(" ", "-")}.png', dpi=300)
 
 

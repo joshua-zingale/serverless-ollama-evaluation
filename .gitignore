@@ -5,3 +5,4 @@
 server/models
 .ignored/
 **/.DS_Store
+client/images/*
